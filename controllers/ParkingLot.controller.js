@@ -15,6 +15,15 @@ const getParkingLots = async (req, res) => {
 };
 const addParkingLot = async (req, res) => {
   console.log("ParkingLot POST : ", req.body);
+  if(req.body.capacity === true) {
+    res.status(200).json({
+      isSuccess: false,
+      error: {
+        reason: `Invalid Capacity`,
+      },
+    });
+    return;
+  }
   try {
     if(!req.body.capacity) {
       res.status(200).json({
@@ -38,6 +47,8 @@ const addParkingLot = async (req, res) => {
   } catch (error) {
     if(error.message.includes("id:"))
       error.message = "Invalid ID";
+    else if(error.message.includes("exceeds"))
+      error.message = "Capacity exceeds maximum limit";
     else if(error.message.includes("capacity:"))
     error.message = "Invalid Capacity";
     res.status(200).json({
