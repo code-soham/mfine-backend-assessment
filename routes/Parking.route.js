@@ -1,0 +1,11 @@
+const app = require("express")();
+const parking = require("../controllers/Parking.controller");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.get("/", parking.getParkings);
+app.post("/", parking.addParking);
+app.delete("/", parking.deleteParking);
+module.exports = app;
